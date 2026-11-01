@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#173f35">
+<title>Projeto Vida — Checklist diário</title>
+<style>
+  :root { color-scheme: light; --green:#173f35; --mint:#e8f1ec; --ink:#20302a; --muted:#68766f; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:22px 14px 40px; background:#f3f6f3; color:var(--ink); font:16px/1.45 system-ui,-apple-system,Segoe UI,sans-serif; }
+  main { max-width:620px; margin:auto; }
+  header { background:var(--green); color:white; border-radius:20px; padding:24px 22px; }
+  header small { opacity:.8; letter-spacing:.12em; text-transform:uppercase; font-weight:700; }
+  h1 { margin:7px 0 4px; font-size:27px; }
+  header p { margin:0; opacity:.88; }
+  .card { background:white; border:1px solid #e1e9e3; border-radius:17px; padding:18px; margin-top:15px; box-shadow:0 5px 18px #173f350a; }
+  h2 { margin:0 0 13px; font-size:18px; }
+  .date { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  input[type="date"], input[type="number"], textarea { width:100%; border:1px solid #d6e0d9; border-radius:10px; padding:11px; font:inherit; background:#fff; color:var(--ink); }
+  .task { display:flex; align-items:flex-start; gap:12px; padding:12px 0; border-bottom:1px solid #edf1ee; cursor:pointer; }
+  .task:last-child { border-bottom:0; padding-bottom:0; }
+  .task input { width:21px; height:21px; margin:1px 0 0; accent-color:var(--green); flex:0 0 auto; }
+  .task span { flex:1; }
+  .hint { color:var(--muted); font-size:13px; margin:9px 0 0; }
+  .ratings { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  .ratings label { border:1px solid #dce6df; border-radius:11px; padding:10px; display:flex; gap:8px; align-items:center; }
+  .ratings input { accent-color:var(--green); }
+  .actions { display:grid; gap:10px; margin-top:16px; }
+  button { border:0; border-radius:12px; padding:14px 16px; font:700 16px system-ui; cursor:pointer; }
+  .primary { background:var(--green); color:white; }
+  .secondary { background:var(--mint); color:var(--green); }
+  #status { min-height:22px; color:var(--green); font-weight:650; font-size:14px; }
+  #report { min-height:150px; margin-top:10px; font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace; }
+  footer { text-align:center; color:var(--muted); font-size:12px; padding:18px 8px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <small>Projeto Vida</small>
+    <h1>Meu dia, minhas escolhas.</h1>
+    <p>Um passo de cada vez. Marque o que conseguiu realizar hoje.</p>
+  </header>
+
+  <section class="card">
+    <h2>📅 Registro do dia</h2>
+    <div class="date">
+      <label for="day">Data do acompanhamento</label>
+      <input id="day" type="date">
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>✅ Checklist diário</h2>
+    <div id="tasks">
+      <label class="task"><input type="checkbox" data-label="Acordei às 5h30"><span>Acordei às 5h30</span></label>
+      <label class="task"><input type="checkbox" data-label="Fiz o treino ou atividade física planejada"><span>Fiz o treino ou atividade física planejada</span></label>
+      <label class="task"><input type="checkbox" data-label="Mantive uma alimentação equilibrada"><span>Mantive uma alimentação equilibrada</span></label>
+      <label class="task"><input type="checkbox" data-label="Bebi água ao longo do dia"><span>Bebi água ao longo do dia</span></label>
+      <label class="task"><input type="checkbox" data-label="Fiz minha leitura de 15 minutos"><span>Fiz minha leitura de 15 minutos</span></label>
+      <label class="task"><input type="checkbox" data-label="Tive meu momento com Deus"><span>Tive meu momento com Deus</span></label>
+      <label class="task"><input type="checkbox" data-label="Reduzi refrigerante e/ou álcool"><span>Reduzi refrigerante e/ou álcool</span></label>
+      <label class="task"><input type="checkbox" data-label="Reduzi o uso de telas à noite"><span>Reduzi o uso de telas à noite</span></label>
+      <label class="task"><input type="checkbox" data-label="Preparei o necessário para amanhã"><span>Preparei o necessário para amanhã</span></label>
+      <label class="task"><input type="checkbox" data-label="Deitei às 21h30"><span>Deitei às 21h30</span></label>
+    </div>
+    <p class="hint">Não marque algo só por obrigação. O objetivo é registrar honestamente como foi seu dia.</p>
+  </section>
+
+  <section class="card">
+    <h2>🌱 Como foi meu dia?</h2>
+    <div class="ratings">
+      <label><input type="radio" name="mood" value="Ótimo">Ótimo</label>
+      <label><input type="radio" name="mood" value="Bom">Bom</label>
+      <label><input type="radio" name="mood" value="Razoável">Razoável</label>
+      <label><input type="radio" name="mood" value="Difícil">Difícil</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>⚖️ Peso (opcional)</h2>
+    <input id="weight" type="number" min="1" max="400" step="0.1" placeholder="Ex.: 128,5 kg">
+    <p class="hint">Não precisa se pesar todos os dias. Preencha apenas quando tiver uma medida.</p>
+  </section>
+
+  <section class="card">
+    <h2>📝 Observações</h2>
+    <textarea id="notes" rows="3" placeholder="Como me senti? O que foi difícil? Alguma conquista?"></textarea>
+    <div class="actions">
+      <button class="primary" id="copy">📋 Copiar relatório para enviar no ChatGPT</button>
+      <button class="secondary" id="show">Visualizar relatório</button>
+    </div>
+    <p id="status" role="status" aria-live="polite"></p>
+    <textarea id="report" rows="8" readonly placeholder="Seu relatório aparecerá aqui. Depois, copie e cole na conversa do Projeto Vida."></textarea>
+  </section>
+  <footer>Projeto Vida • Consistência acima da perfeição.</footer>
+</main>
+<script>
+const day = document.getElementById('day');
+const today = new Date();
+day.value = new Date(today.getTime() - today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+function buildReport() {
+  const date = day.value ? day.value.split('-').reverse().join('/') : 'Não informada';
+  const boxes = [...document.querySelectorAll('#tasks input[type="checkbox"]')];
+  const done = boxes.filter(x => x.checked).map(x => x.dataset.label);
+  const pending = boxes.filter(x => !x.checked).map(x => x.dataset.label);
+  const mood = document.querySelector('input[name="mood"]:checked')?.value || 'Não informado';
+  const weight = document.getElementById('weight').value;
+  const notes = document.getElementById('notes').value.trim();
+  return [
+    '🌱 PROJETO VIDA — REGISTRO DIÁRIO',
+    'Data: ' + date,
+    '',
+    `Concluídos: ${done.length}/${boxes.length}`,
+    'REALIZADOS:',
+    ...(done.length ? done.map(x => '✓ ' + x) : ['— Nenhum marcado']),
+    '',
+    'NÃO REALIZADOS / NÃO MARCADOS:',
+    ...(pending.length ? pending.map(x => '○ ' + x) : ['— Todos concluídos']),
+    '',
+    'Como foi meu dia: ' + mood,
+    'Peso: ' + (weight ? weight.replace('.', ',') + ' kg' : 'Não informado'),
+    'Observações: ' + (notes || 'Nenhuma'),
+    '',
+    'Por favor, registre este acompanhamento no histórico do Projeto Vida e me ajude a identificar avanços e pontos de atenção, sem julgamentos.'
+  ].join('\n');
+}
+function showReport() {
+  document.getElementById('report').value = buildReport();
+}
+document.getElementById('show').addEventListener('click', () => {
+  showReport();
+  document.getElementById('status').textContent = 'Relatório atualizado. Você pode copiá-lo abaixo.';
+});
+document.getElementById('copy').addEventListener('click', async () => {
+  showReport();
+  const text = document.getElementById('report').value;
+  try {
+    await navigator.clipboard.writeText(text);
+    document.getElementById('status').textContent = 'Relatório copiado! Agora volte ao ChatGPT, cole e envie.';
+  } catch (e) {
+    document.getElementById('report').focus();
+    document.getElementById('report').select();
+    document.getElementById('status').textContent = 'A cópia automática não foi permitida pelo navegador. Selecione e copie o texto do campo abaixo.';
+  }
+});
+</script>
+</body>
+</html>
